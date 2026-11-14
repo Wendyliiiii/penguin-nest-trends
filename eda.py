@@ -52,6 +52,15 @@ def main():
     print("Breeding season summary:")
     print(adelie["season_starting"].describe())
 
+    print("Categorical variable frequencies:")
+    for column in ["site_name", "common_name",
+                   "count_type", "vantage"]:
+        print(column)
+        print(adelie[column].value_counts())
+
+    print("Duplicate breeding seasons:")
+    print(adelie["season_starting"].duplicated().sum())
+
     years = adelie["season_starting"]
     counts = adelie["penguin_count"]
     result = stats.kendalltau(years, counts)
@@ -140,10 +149,12 @@ def main():
 
     adelie = adelie.sort_values("season_starting")
 
-    sns.lineplot(
-        data=adelie,
-        x="season_starting",
-        y="penguin_count",
+    plot_data = adelie.set_index("season_starting")
+    plot_data = plot_data.reindex(range(1984, 2025))
+
+    plt.plot(
+        plot_data.index,
+        plot_data["penguin_count"],
         marker="o"
     )
 

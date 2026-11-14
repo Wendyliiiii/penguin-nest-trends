@@ -38,10 +38,24 @@ def test_unsorted_years():
     assert list(result["count_change"]) == [50, -30]
 
 
+def test_original_data_unchanged():
+    data = pd.DataFrame({
+        "season_starting": [2000, 2001, 2002],
+        "penguin_count": [100, 150, 120]
+    })
+
+    original = data.copy()
+
+    find_yearly_changes(data)
+
+    assert data.equals(original)
+
+
 def main():
     test_find_yearly_changes()
     test_missing_years()
     test_unsorted_years()
+    test_original_data_unchanged()
     print("All tests passed!")
 
 
